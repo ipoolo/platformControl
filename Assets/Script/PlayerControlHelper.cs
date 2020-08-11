@@ -10,6 +10,12 @@ public class PlayerControlHelper : MonoBehaviour
     private BetterJump jumpContorller;
 
     private Animator animator;
+    public float jumpfalldownHelpTime = 1.0f;//补偿时间
+    private float jumpfalldownHelpTimer;//补偿计时器
+    private bool isJumpfalldownHelpTimerRun = false;
+    [HideInInspector]
+    public bool canJumpByHelpter = false;
+
     private void Awake()
     {
         colls = GetComponent<Collisions>();
@@ -36,10 +42,34 @@ public class PlayerControlHelper : MonoBehaviour
         
         
     }
+    
+    public void StartCounterJumpfalldownHelpTimer()
+    {
+        isJumpfalldownHelpTimerRun = true;
+        jumpfalldownHelpTimer = 0;
+        canJumpByHelpter = true;
+    }
+
+    public void StopCounterJumpfalldownHelpTimer()
+    {
+        isJumpfalldownHelpTimerRun = false;
+        jumpfalldownHelpTimer = 0;
+        canJumpByHelpter = false;
+    }
+
+
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (isJumpfalldownHelpTimerRun)
+        {
+            jumpfalldownHelpTimer += Time.deltaTime;
+            if(jumpfalldownHelpTimer > jumpfalldownHelpTime)
+            {
+                isJumpfalldownHelpTimerRun = false;
+                canJumpByHelpter = false;
+            }
+        }   
     }
 }

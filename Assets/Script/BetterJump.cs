@@ -12,6 +12,7 @@ public class BetterJump : MonoBehaviour
     private Animator animator;
     private Rigidbody2D rb;
     private Collisions colls;
+    private PlayerControlHelper pch;
 
     [Range (0,100)]
     public float speedJumpY;
@@ -26,13 +27,23 @@ public class BetterJump : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         colls = GetComponentInParent<Collisions>();
         animator = GetComponentInChildren<Animator>();
+        pch = GetComponent<PlayerControlHelper>();
         colls.playerListenOnFloorCallBack = (isOnFloor) => {
             //if (isOnFloor == true && Mathf.Abs(rb.velocity.y) < 0.1f )
+            //只有变化才能进入
             if (isOnFloor == true )
             {
-                
                 //到达地面
                 canDoubleJumped = true;
+            }
+            else
+            {
+                //离开地面 
+                if(rb.velocity.y < 0)
+                {
+                    //下坠
+                    pch.StartCounterJumpfalldownHelpTimer();
+                }
             }
         };
     }
@@ -71,7 +82,7 @@ public class BetterJump : MonoBehaviour
 
     private void DoJump()    
     {
-        if (colls.getIsOnFloor() == true)
+        if (colls.getIsOnFloor() == true || pch.canJumpByHelpter)
         {
             SimpleJump();
 
@@ -87,6 +98,7 @@ public class BetterJump : MonoBehaviour
     {
         rb.velocity = new Vector2(rb.velocity.x, speedJumpY);
         animator.SetTrigger("IsJump");
+        pch.StopCounterJumpfalldownHelpTimer();
     }
 
     private void DoubleJump()
