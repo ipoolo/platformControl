@@ -79,7 +79,9 @@ public class Move : MonoBehaviour
             {
                 animator.SetBool("IsWallSilde", false); 
             }
-        }CheckFaceTo();
+        }
+        CheckDown();
+        CheckFaceTo();
     }
 
     private void CheckMove()
@@ -203,6 +205,32 @@ public class Move : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         isXOutControl = false;
+    }
+
+    private string[] oneWayPaltformMaskLayers = { "OneWayPaltform" };
+    public void CheckDown()
+    {
+        if (colls.getIsOnFloor()&& Input.GetKeyDown(KeyCode.S))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2, LayerMask.GetMask(oneWayPaltformMaskLayers));
+            if (hit.collider)
+            {
+                //执行动画
+                animator.SetTrigger("IsJump");
+                //向上跳跃
+                rb.velocity = new Vector2(rb.velocity.x, 1.0f);
+                //切换图层
+                gameObject.layer = LayerMask.NameToLayer("PlayerOneWayPaltformDown");
+                //start切换回来
+                StartCoroutine(Back2PlayerLayer());
+            }
+        }
+    }
+
+    IEnumerator Back2PlayerLayer()
+    {
+        yield return new WaitForSeconds(0.3f);
+        gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
 
