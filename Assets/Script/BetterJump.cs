@@ -43,6 +43,7 @@ public class BetterJump : MonoBehaviour
                 {
                     //下坠
                     pch.StartCounterJumpfalldownHelpTimer();
+                    animator.SetBool("IsSilde", false);
                 }
             }
         };
@@ -74,7 +75,7 @@ public class BetterJump : MonoBehaviour
 
     private void CheckPress()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump")|| Input.GetKeyDown(KeyCode.J))
         {
             DoJump();
         }

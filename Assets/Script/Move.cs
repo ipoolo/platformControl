@@ -1,18 +1,37 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.iOS;
 using UnityEngine;
 
 public class Move : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator;
+    private Collisions colls;
 
     public float moveSpeed;
     public float topDownOffset = 0.5f;
+    public float sildeMoveScale ;
+
+    private float sildeTimer = 0.0f;
+    private bool isCounterSildeTime = false;
+
+    private SpriteRenderer sr;
+
+    public Color trailColor;
+    public Color fadeColor;
+    public float fadeTime;
+
+    public float shadowStepTime;
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
+        colls = GetComponent<Collisions>();
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
     // Start is called before the first frame update
     void Start()
@@ -23,9 +42,24 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckInput();
+        UpdateAnimatorInfo();
+        if (isCounterSildeTime)
+        {
+            sildeTimer += Time.deltaTime;
+            if(sildeTimer > shadowStepTime)
+            {
+                sildeTimer = 0;
+                SpwanSilderShadow();
+            }
+        }
+    }
+
+    private void CheckInput()
+    {
         CheckMove();
         CheckFaceTo();
-        UpdateAnimatorInfo();
+        CheckSlide();
     }
     private void CheckMove()
     {
@@ -48,12 +82,70 @@ public class Move : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 180, 0f);
         }
     }
-
+    
     private void UpdateAnimatorInfo()
     {
        
         animator.SetFloat("SpeedX", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("SpeedY", rb.velocity.y);
     }
-    
+
+    private void CheckSlide()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (colls.getIsOnFloor()) { 
+                //按住滑行
+                rb.velocity = new Vector2(rb.velocity.x * sildeMoveScale, rb.velocity.y);
+                //执行动画
+                animator.SetBool("IsSilde", true);
+                isCounterSildeTime = true;
+            }
+            else
+            {
+                //松开滑行
+                //退出动画
+                animator.SetBool("IsSilde", false);
+                isCounterSildeTime = false;
+                sildeTimer = 0.0f;
+            }
+
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftControl)|| colls.getIsOnFloor() == false)
+        {
+            //松开滑行
+            //退出动画
+            animator.SetBool("IsSilde", false);
+            isCounterSildeTime = false;
+            sildeTimer = 0.0f;
+        }
+    }
+
+    public void SpwanSilderShadow()
+    {
+        Sequence s = DOTween.Sequence();
+        //创建一个阴影
+        GameObject gb = (GameObject)Resources.Load("Prefabs/Shadow");
+        Transform currentshadow = Instantiate(gb).transform;
+        s.AppendCallback(() => currentshadow.position = transform.position);
+        if(Vector2.Dot(transform.right,Vector2.right) >0 )
+        {
+            s.AppendCallback(() => currentshadow.GetComponent<SpriteRenderer>().flipX = false);
+        }
+        else
+        {
+            s.AppendCallback(() => currentshadow.GetComponent<SpriteRenderer>().flipX = true);
+        }
+        
+        s.AppendCallback(() => currentshadow.GetComponent<SpriteRenderer>().sprite = sr.sprite);
+        s.Append(currentshadow.GetComponent<SpriteRenderer>().material.DOColor(trailColor, 0));
+        s.AppendCallback(() => FadeSprite(currentshadow));
+    }
+
+    private void FadeSprite(Transform shadownTransform)
+    {
+        shadownTransform.GetComponent<SpriteRenderer>().material.DOKill();
+        shadownTransform.GetComponent<SpriteRenderer>().material.DOColor(fadeColor, fadeTime);
+    }
+
 }

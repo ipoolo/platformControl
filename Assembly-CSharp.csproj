@@ -63,14 +63,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModuleAudio.cs" />
+    <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModulePhysics.cs" />
+    <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModulePhysics2D.cs" />
+    <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModuleSprite.cs" />
+    <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModuleUI.cs" />
+    <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
+    <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Script\BetterJump.cs" />
     <Compile Include="Assets\Script\Collisions.cs" />
     <Compile Include="Assets\Script\Hitbox\BaseHitbox.cs" />
     <Compile Include="Assets\Script\Hitbox\FloorHitbox.cs" />
     <Compile Include="Assets\Script\Hitbox\HeadChannelHitbox.cs" />
+    <Compile Include="Assets\Script\Hitbox\WallHitbox.cs" />
     <Compile Include="Assets\Script\Move.cs" />
     <Compile Include="Assets\Script\Particle\JumpParticle.cs" />
     <Compile Include="Assets\Script\PlayerControlHelper.cs" />
+    <Compile Include="Assets\Script\Shadow.cs" />
+    <None Include="Assets\DOTween\DOTween\readme.txt" />
     <Reference Include="UnityEngine">
       <HintPath>D:/Unity/2019.4.3f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -253,6 +263,9 @@
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>D:/Unity/2019.4.3f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>E:/UnityWorkSpace/PlatformDemo/PlatformDemo/Assets/DOTween/DOTween/DOTween.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>D:/Unity/2019.4.3f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
