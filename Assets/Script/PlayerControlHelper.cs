@@ -6,7 +6,7 @@ public class PlayerControlHelper : MonoBehaviour
 {
     private Collisions colls;
     private Rigidbody2D rb;
-    public float verticalSpeedHelper;
+    public float verticalHelperSpeed;
     private BetterJump jumpContorller;
 
     private Animator animator;
@@ -26,14 +26,16 @@ public class PlayerControlHelper : MonoBehaviour
 
         colls.playerListenOnHeadChannelCallBack = (fire) =>
         {
-            //把重力去掉 或者 给一个向上的速度
-            Debug.Log("playerListenOnHeadChannelCallBack");
-            rb.velocity = new Vector2(rb.velocity.x, verticalSpeedHelper);//用固定速度是因为要做动画的话同样的位移[升高距离,速度应该一样,也更符合人翻墙的统一速度]
-            //执行动画
-            animator.SetTrigger("IsPropup");
-            //并且关闭canDoubleJump
-            jumpContorller.canDoubleJumped = false;
-            Instantiate((GameObject)Resources.Load("Prefabs/JumpParticle"), transform.position, Quaternion.identity);
+            if(rb.velocity.y > 0) { 
+                //把重力去掉 或者 给一个向上的速度
+                Debug.Log("playerListenOnHeadChannelCallBack");
+                rb.velocity = new Vector2(rb.velocity.x, verticalHelperSpeed);//用固定速度是因为要做动画的话同样的位移[升高距离,速度应该一样,也更符合人翻墙的统一速度]
+                //执行动画
+                animator.SetTrigger("IsPropup");
+                //并且关闭canDoubleJump
+                jumpContorller.canDoubleJumped = false;
+                Instantiate((GameObject)Resources.Load("Prefabs/JumpParticle"), transform.position, Quaternion.identity);
+            }
         };
     }
     // Start is called before the first frame update

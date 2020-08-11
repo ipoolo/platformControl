@@ -15,4 +15,31 @@ public class WallHitbox : BaseHitbox
     {
         
     }
+    //预留3个镭射检测
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("a");
+        if (CheckIsTrigger(other))
+        {
+            colls.setIsOnWall(true);
+            //镭射检测
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (CheckIsTrigger(other))
+        {
+            //镭射检测
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (CheckIsTrigger(other))
+        {
+            colls.setIsOnWall(false);
+        }
+    }
 }

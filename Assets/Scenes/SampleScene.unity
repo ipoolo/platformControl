@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39644160}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalPosition: {x: 0, y: -1.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1722992128}
@@ -167,7 +167,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.55}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -195,6 +195,7 @@ MonoBehaviour:
   masklayerStrings:
   - Wall
   - OneWayPaltform
+  - RightWall
 --- !u!50 &39644164
 Rigidbody2D:
   serializedVersion: 4
@@ -215,7 +216,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +311,8 @@ GameObject:
   - component: {fileID: 1588949186}
   - component: {fileID: 1588949188}
   - component: {fileID: 1588949187}
-  m_Layer: 11
+  - component: {fileID: 1588949189}
+  m_Layer: 13
   m_Name: WallHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +327,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1588949185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.464, y: -0.1675835, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1722992128}
@@ -349,9 +351,9 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!61 &1588949188
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -365,7 +367,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.44489318, y: -0.16758347}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -378,6 +380,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.05435264, y: 1.7900352}
   m_EdgeRadius: 0
+--- !u!114 &1588949189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588949185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f59495dc6e997a478826fcf793571fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masklayerStrings:
+  - RightWall
 --- !u!1001 &1629285572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -465,6 +481,11 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: 36f2f278bad98054690d394f004253ad, type: 2}
+    - target: {fileID: 4113706140663860531, guid: 23a2e4a8c5e38ce4cb45b54c69713650,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 7806312839471730913, guid: 23a2e4a8c5e38ce4cb45b54c69713650,
         type: 3}
       propertyPath: m_Name
@@ -488,11 +509,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1722992128}
   - component: {fileID: 1722992126}
-  - component: {fileID: 1722992134}
   - component: {fileID: 1722992125}
   - component: {fileID: 1722992133}
-  - component: {fileID: 1722992129}
   - component: {fileID: 1722992130}
+  - component: {fileID: 1722992129}
   - component: {fileID: 1722992131}
   - component: {fileID: 1722992132}
   m_Layer: 10
@@ -515,8 +535,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.014264047, y: -0.18353271}
-  m_Size: {x: 0.8003036, y: 1.794941}
+  m_Offset: {x: 0, y: -0.18994713}
+  m_Size: {x: 0.9, y: 1.8077698}
   m_Direction: 0
 --- !u!50 &1722992126
 Rigidbody2D:
@@ -569,6 +589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12f751082cad6c7479b00ae248f10483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallJumpSpeed: 7
   speedJumpY: 8
   canDoubleJumped: 1
   isFall: 0
@@ -590,7 +611,9 @@ MonoBehaviour:
   trailColor: {r: 1, g: 0.009433985, b: 0.009433985, a: 1}
   fadeColor: {r: 1, g: 1, b: 1, a: 0}
   fadeTime: 0.5
+  wallSildeSpeed: 1.5
   shadowStepTime: 0.3
+  isXOutControl: 0
 --- !u!114 &1722992131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,7 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d3896a08e45b24a9e73f1b67b18486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalSpeedHelper: 7.5
+  verticalHelperSpeed: 7.5
   jumpfalldownHelpTime: 0.25
   canJumpByHelpter: 0
 --- !u!61 &1722992133
@@ -629,13 +652,13 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722992124}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -1.04}
+  m_Offset: {x: 0, y: -1.03}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -648,28 +671,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.06873131}
   m_EdgeRadius: 0
---- !u!66 &1722992134
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1722992124}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths: []
-  m_CompositePaths:
-    m_Paths: []
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
 --- !u!1 &1890908964
 GameObject:
   m_ObjectHideFlags: 0

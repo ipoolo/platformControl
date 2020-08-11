@@ -38,8 +38,11 @@ public class FloorHitbox : BaseHitbox
     {
         if (CheckIsTrigger(other))
         {
-            colls.setIsOnFloor(false);
-            colls.footOnState = footOn.none;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.down,0.01f, LayerMask.GetMask(masklayerStrings));
+            if (!hit.collider) { 
+                colls.setIsOnFloor(false);
+                colls.footOnState = footOn.none;
+            }
         }
     }
 

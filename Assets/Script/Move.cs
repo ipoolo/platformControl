@@ -23,7 +23,11 @@ public class Move : MonoBehaviour
     public Color fadeColor;
     public float fadeTime;
 
+    public float wallSildeSpeed;
+
     public float shadowStepTime;
+
+    public bool isXOutControl;
 
 
     private void Awake()
@@ -32,6 +36,7 @@ public class Move : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         colls = GetComponent<Collisions>();
         sr = GetComponentInChildren<SpriteRenderer>();
+        isXOutControl = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -58,16 +63,37 @@ public class Move : MonoBehaviour
     private void CheckInput()
     {
         CheckMove();
-        CheckFaceTo();
-        CheckSlide();
+        
+        if (colls.getIsOnFloor()) {
+            animator.SetBool("IsWallSilde", false);
+            CheckSlide();
+        }
+        else 
+        {
+            ExitShadowEffect();
+            if (colls.getIsOnWall())
+            {
+                CheckOnWallSlide();
+            }
+            else
+            {
+                animator.SetBool("IsWallSilde", false); 
+            }
+        }CheckFaceTo();
     }
+
     private void CheckMove()
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 
         //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(moveX * moveSpeed, rb.velocity.y), 0.8f);
-        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
+        if (!isXOutControl) {
+
+            //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(moveX * moveSpeed, rb.velocity.y), Time.deltaTime * 10);
+            rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
+        }
+
 
     }
 
@@ -92,7 +118,7 @@ public class Move : MonoBehaviour
 
     private void CheckSlide()
     {
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl)&& Mathf.Abs(rb.velocity.x) > 1)
         {
             if (colls.getIsOnFloor()) { 
                 //按住滑行
@@ -101,24 +127,21 @@ public class Move : MonoBehaviour
                 animator.SetBool("IsSilde", true);
                 isCounterSildeTime = true;
             }
-            else
-            {
-                //松开滑行
-                //退出动画
-                animator.SetBool("IsSilde", false);
-                isCounterSildeTime = false;
-                sildeTimer = 0.0f;
-            }
 
         }
         else if(Input.GetKeyUp(KeyCode.LeftControl)|| colls.getIsOnFloor() == false)
         {
-            //松开滑行
-            //退出动画
-            animator.SetBool("IsSilde", false);
-            isCounterSildeTime = false;
-            sildeTimer = 0.0f;
+            ExitShadowEffect();
         }
+    }
+
+    public void ExitShadowEffect()
+    {
+        //松开滑行
+        //退出动画
+        animator.SetBool("IsSilde", false);
+        isCounterSildeTime = false;
+        sildeTimer = 0.0f;
     }
 
     public void SpwanSilderShadow()
@@ -147,5 +170,40 @@ public class Move : MonoBehaviour
         shadownTransform.GetComponent<SpriteRenderer>().material.DOKill();
         shadownTransform.GetComponent<SpriteRenderer>().material.DOColor(fadeColor, fadeTime);
     }
+
+    public void CheckOnWallSlide()
+    {
+        if (colls.getIsOnWall())
+        {
+            //动画切换到滑墙
+            animator.SetBool("IsWallSilde", true);
+            //粒子效果TODO
+
+            //设置Y移速为固定值
+            if (!isXOutControl) { 
+                rb.velocity = new Vector2(rb.velocity.x, -1 * wallSildeSpeed);
+            }
+        }
+        else
+        {
+            animator.SetBool("IsWallSilde", false);
+            
+        }
+
+    }
+
+    public void LockXControl()
+    {
+        isXOutControl = true;
+        StopCoroutine(UnlockXControl());
+        StartCoroutine(UnlockXControl());
+    }
+
+    IEnumerator UnlockXControl()
+    {
+        yield return new WaitForSeconds(0.3f);
+        isXOutControl = false;
+    }
+
 
 }
