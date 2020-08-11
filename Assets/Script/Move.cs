@@ -131,7 +131,7 @@ public class Move : MonoBehaviour
             }
 
         }
-        else if(Input.GetKeyUp(KeyCode.LeftControl)|| colls.getIsOnFloor() == false)
+        else if(Input.GetKeyUp(KeyCode.LeftControl)|| colls.getIsOnFloor() == false || Mathf.Abs(rb.velocity.x) < 1)
         {
             ExitShadowEffect();
         }

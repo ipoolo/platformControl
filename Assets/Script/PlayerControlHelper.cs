@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerControlHelper : MonoBehaviour
@@ -15,6 +16,9 @@ public class PlayerControlHelper : MonoBehaviour
     private bool isJumpfalldownHelpTimerRun = false;
     [HideInInspector]
     public bool canJumpByHelpter = false;
+
+    public bool canPropUpPass;
+    public bool canClimbPass;
 
     private void Awake()
     {
@@ -72,6 +76,51 @@ public class PlayerControlHelper : MonoBehaviour
                 isJumpfalldownHelpTimerRun = false;
                 canJumpByHelpter = false;
             }
-        }   
+        }
+        bool forwarKeyHold = false;
+        if (Vector2.Dot(transform.right, Vector2.right) > 0)
+        {
+            forwarKeyHold = Input.GetKey(KeyCode.D);
+        }
+        else
+        {
+            forwarKeyHold = Input.GetKey(KeyCode.A);
+        }
+
+        if (canPropUpPass && forwarKeyHold)
+        {
+            if (!isPropUpRuning)
+            {
+                isPropUpRuning = true;
+                targetPostionY = transform.position.y + 1.0f;
+                stepPropUp = 1 / 4.0f;
+                animator.SetTrigger("IsPropup");
+                StopCoroutine(PropUp());
+                StartCoroutine(PropUp());
+            }
+            //垂直 4/60秒内提高到1unity高度 锁定无重力
+            
+        }
     }
+    private float targetPostionY;
+    private float stepPropUp;
+    private bool isPropUpRuning = false;
+    IEnumerator PropUp()
+    {
+        Debug.Log("C");
+        rb.gravityScale = 0.0f;
+        transform.position += new Vector3(0, stepPropUp);
+        while (isPropUpRuning)
+        {
+            yield return new WaitForEndOfFrame();
+            transform.position += new Vector3(0, stepPropUp);
+            if(transform.position.y >= targetPostionY)
+            {
+                isPropUpRuning = false;
+                rb.gravityScale = 1.0f;
+            }
+        }
+
+    }
+
 }

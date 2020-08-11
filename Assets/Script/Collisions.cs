@@ -24,12 +24,21 @@ public class Collisions : MonoBehaviour
     [SerializeField] private bool isOnHeadChannel;
     public Action<bool> playerListenOnHeadChannelCallBack;
 
+    public bool isClimbRayOverlap;
+    public bool ispropupRayOverlap;
+    public bool isFootRayOverlap;
+
+    public PlayerControlHelper pch;
+
+
+
     private Animator animator;
 
     public footOn footOnState;
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
+        pch = GetComponent<PlayerControlHelper>();
     }
 
     void Start()
@@ -41,6 +50,30 @@ public class Collisions : MonoBehaviour
     void Update()
     {
         UpdateAnimatorInfo();
+        UpdateHelperStateInfo();
+    }
+
+    public void UpdateHelperStateInfo()
+    {
+        if (!isFootRayOverlap && !ispropupRayOverlap && !isClimbRayOverlap)
+        {
+            //越过
+            pch.canPropUpPass = false;
+            pch.canClimbPass = false;
+
+        }else if (isFootRayOverlap && !ispropupRayOverlap && !isClimbRayOverlap)
+        {
+            //越过
+            pch.canPropUpPass = true;
+            pch.canClimbPass = false;
+
+        }
+        else if (isFootRayOverlap && ispropupRayOverlap && isClimbRayOverlap)
+        {
+            //攀爬
+            pch.canPropUpPass = false;
+            pch.canClimbPass = true;
+        }
     }
 
     public void setIsOnWall(bool _isOnWall)
