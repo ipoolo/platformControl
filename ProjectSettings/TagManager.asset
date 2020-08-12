@@ -18,8 +18,8 @@ TagManager:
   - Player
   - PlayerFootCheckBox
   - OneWayPaltform
-  - 
-  - 
+  - PlayerWallCheckBox
+  - PlayerOneWayPaltformDown
   - 
   - 
   - 
