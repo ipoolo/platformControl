@@ -21,7 +21,6 @@ public class FloorHitbox : BaseHitbox
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("other_"+ other.gameObject.name);
         if (CheckIsTrigger(other))
         {
             colls.setIsOnFloor(true);

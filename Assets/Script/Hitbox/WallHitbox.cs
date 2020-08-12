@@ -13,6 +13,12 @@ public class WallHitbox : BaseHitbox
     [Header("FootRay")]
     public Transform footRayTransform;
     public float footRayDistance;
+    [Header("FootDownRay")]
+    public Transform footDownRayTransform;
+    public float footDownRayDistance;
+
+    [Header("HeadPoint")]
+    public Transform headPointTransform;
 
     public LayerMask rayMaskLayer;
 
@@ -25,16 +31,35 @@ public class WallHitbox : BaseHitbox
     // Update is called once per frame
     void Update()
     {
-        colls.isClimbRayOverlap = RayCastCheck(climbRayTransform.position, climbRayDistance);
+        colls.isTopAboveOverlap = RayCastCheck(climbRayTransform.position, climbRayDistance);
         colls.ispropupRayOverlap = RayCastCheck(propupRayTransform.position,propupRayDistance);
-        colls.isFootRayOverlap = RayCastCheck(footRayTransform.position,footRayDistance); 
-
+        colls.isFootRayOverlap = RayCastCheck(footRayTransform.position,footRayDistance);
+        colls.isFootDownRayOverlap = RayCastCheck(footDownRayTransform.position, footDownRayDistance) && !RayCastCheckUpDown(footDownRayTransform.position, footDownRayDistance);
+        Debug.DrawLine(footDownRayTransform.position, footDownRayTransform.position + new Vector3(footDownRayDistance,0),Color.red,1 );
     }
 
     private bool RayCastCheck(Vector2 position , float distance)
     {
         bool result;
-        RaycastHit2D hit = Physics2D.Raycast(position,Vector2.right,distance, rayMaskLayer.value);
+        RaycastHit2D hit = Physics2D.Raycast(position,transform.right,distance, rayMaskLayer.value);
+        if (hit.collider)
+        {
+            //有
+            result = true;
+        }
+        else
+        {
+            //没有
+            result = false;
+        }
+
+        return result;
+    }
+
+    private bool RayCastCheckUpDown(Vector2 position, float distance)
+    {
+        bool result;
+        RaycastHit2D hit = Physics2D.Raycast(position, transform.up * -1, distance, rayMaskLayer.value);
         if (hit.collider)
         {
             //有

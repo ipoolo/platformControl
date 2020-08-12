@@ -71,6 +71,7 @@
     <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
     <Compile Include="Assets\DOTween\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Script\BetterJump.cs" />
+    <Compile Include="Assets\Script\CameraFollow.cs" />
     <Compile Include="Assets\Script\Collisions.cs" />
     <Compile Include="Assets\Script\Hitbox\BaseHitbox.cs" />
     <Compile Include="Assets\Script\Hitbox\FloorHitbox.cs" />

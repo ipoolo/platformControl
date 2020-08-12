@@ -79,13 +79,14 @@ public class BetterJump : MonoBehaviour
         //    isFall = false;
         //    rb.velocity += Vector2.up * Physics2D.gravity.y * jumpGScale * Time.deltaTime;
         //}else 
-
-        if (rb.velocity.y <= - 0.1f)
-        {
-            isFall = true;
-            rb.velocity += Vector2.up * Physics2D.gravity.y * fallGScale * Time.deltaTime;
+        if (!movement.isXYOutControl) { 
+            if (rb.velocity.y <= - 0.1f)
+            {
+                isFall = true;
+                rb.velocity += Vector2.up * Physics2D.gravity.y * fallGScale * Time.deltaTime;
+            }
+            CheckPress();
         }
-        CheckPress();
     }
 
     private void CheckPress()

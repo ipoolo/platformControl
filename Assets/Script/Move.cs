@@ -28,6 +28,7 @@ public class Move : MonoBehaviour
     public float shadowStepTime;
 
     public bool isXOutControl;
+    public bool isXYOutControl;
 
 
     private void Awake()
@@ -37,6 +38,7 @@ public class Move : MonoBehaviour
         colls = GetComponent<Collisions>();
         sr = GetComponentInChildren<SpriteRenderer>();
         isXOutControl = false;
+        isXYOutControl = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -90,8 +92,8 @@ public class Move : MonoBehaviour
         float moveY = Input.GetAxis("Vertical");
 
         //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(moveX * moveSpeed, rb.velocity.y), 0.8f);
-        if (!isXOutControl) {
-
+        if (!isXOutControl && !isXYOutControl) {
+            
             //rb.velocity = Vector2.Lerp(rb.velocity, new Vector2(moveX * moveSpeed, rb.velocity.y), Time.deltaTime * 10);
             rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
         }
@@ -101,14 +103,19 @@ public class Move : MonoBehaviour
 
     private void CheckFaceTo()
     {
-        if(rb.velocity.x > 0)
+        if(!isXYOutControl )
         {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            if (rb.velocity.x > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (rb.velocity.x < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0f);
+            }
         }
-        else if (rb.velocity.x < 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0f);
-        }
+
+
     }
     
     private void UpdateAnimatorInfo()
@@ -197,14 +204,27 @@ public class Move : MonoBehaviour
     public void LockXControl()
     {
         isXOutControl = true;
-        StopCoroutine(UnlockXControl());
-        StartCoroutine(UnlockXControl());
+        StopCoroutine(UnlockXControlWithTime(0.3f));
+        StartCoroutine(UnlockXControlWithTime(0.3f));
     }
 
-    IEnumerator UnlockXControl()
+    IEnumerator UnlockXControlWithTime(float time)
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(time);
         isXOutControl = false;
+    }
+
+    public void LockXYControl(float time)
+    {
+        isXYOutControl = true;
+        StopCoroutine(UnlockXYControlWithTime(time));
+        StartCoroutine(UnlockXYControlWithTime(time));
+    }
+
+    IEnumerator UnlockXYControlWithTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        isXYOutControl = false;
     }
 
     private string[] oneWayPaltformMaskLayers = { "OneWayPaltform" };
