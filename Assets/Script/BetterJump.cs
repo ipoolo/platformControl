@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class BetterJump : MonoBehaviour
 {
     private float fallGScale = 2.5f;
-    private float jumpGScale = 2.0f;
+    //private float jumpGScale = 2.0f;
     private float doubleJumpScale = 1.3f;
 
     private Animator animator;

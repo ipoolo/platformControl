@@ -10,6 +10,7 @@ public class PlayerControlHelper : MonoBehaviour
     float climbOffsetHeight = 1.81f;
     float climbOffsetX = 0.45f;
     float climbLockTime = 0.24f;
+    float PropUP = 1.1f;
 
     private Collisions colls;
     private Rigidbody2D rb;
@@ -110,8 +111,12 @@ public class PlayerControlHelper : MonoBehaviour
               if (!isClimbPassRunning)
             {
                 RaycastHit2D hit =  Physics2D.Raycast(wallhitbox.headPointTransform.position, ray2ClimbWallXDirection, wallhitbox.climbRayDistance, wallhitbox.rayMaskLayer);
-                //if (hit.collider) { 
-                    Debug.Log("ClimbPass");
+                RaycastHit2D hit2 = Physics2D.Raycast(transform.position, ray2ClimbWallXDirection, wallhitbox.climbRayDistance, wallhitbox.rayMaskLayer);
+                if (!hit.collider)
+                {
+                    hit = hit2;
+                }
+                Debug.Log("ClimbPass");
                     isClimbPassRunning = true;
                     rb.velocity = ray2ClimbWallXDirection.normalized * 0.001f;
                     float tmpXoffset = (hit.distance + climbOffsetX) * ray2ClimbWallXDirection.normalized.x;
@@ -132,8 +137,8 @@ public class PlayerControlHelper : MonoBehaviour
             {
                 Debug.Log("PropUp");
                 isPropUpRuning = true;
-                targetPropUpPostionY = transform.position.y + 1.0f;
-                stepPropUp = 1 / 4.0f;
+                targetPropUpPostionY = transform.position.y + PropUP;
+                stepPropUp = PropUP / 4.0f;
                 animator.SetTrigger("IsPropup");
                 StopCoroutine(PropUp());
                 StartCoroutine(PropUp());
@@ -161,6 +166,7 @@ public class PlayerControlHelper : MonoBehaviour
     {
 
         rb.gravityScale = 0.0f;
+        rb.velocity = new Vector2(rb.velocity.x, 0);
         transform.position += new Vector3(0, stepPropUp);
         while (isPropUpRuning)
         {
