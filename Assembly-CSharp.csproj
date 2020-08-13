@@ -700,6 +700,12 @@
     <Reference Include="UnityEditor.UI">
       <HintPath>E:/UnityWorkSpace/PlatformDemo/PlatformDemo/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>E:/UnityWorkSpace/PlatformDemo/PlatformDemo/Library/ScriptAssemblies/Cinemachine.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>E:/UnityWorkSpace/PlatformDemo/PlatformDemo/Library/ScriptAssemblies/com.unity.cinemachine.editor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="SuperTiled2UnityEditor.csproj">
